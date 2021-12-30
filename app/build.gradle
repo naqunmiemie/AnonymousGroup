@@ -1,0 +1,137 @@
+plugins {
+    id 'com.android.application'
+}
+
+
+apply from: '../config/sign.gradle'
+
+
+// ---------  version -------------------------------------------------
+updateVersion()
+
+
+
+def updateVersion() {
+    def propertiesFile = file("build.properties")
+    Properties properties = readProperties(propertiesFile)
+
+    def versionCode = properties["version_code"].toString().toInteger()
+    def versionName = properties["version_name"].toString().toInteger()
+
+    if (isReleaseTask()) {
+        System.out.println(">>> Building Release...")
+        versionCode++
+        versionName++
+        properties["version_code"] = versionCode.toString()
+        properties["version_name"] = versionName.toString()
+        writeProperties(propertiesFile, properties)
+    }
+
+    android.defaultConfig.versionCode = versionCode
+    android.defaultConfig.versionName = versionName + getDateTime()
+
+    System.out.println(">>> " + project.parent.name + "   versionName:" + android.defaultConfig.versionName)
+
+}
+
+
+def isReleaseTask() {
+    def tasks = gradle.getStartParameter().getTaskNames()
+    return ":app:assembleRelease" in tasks ||
+            "ass" in tasks ||
+            "assemble" in tasks ||
+            "assembleRelease" in tasks ||
+            ":app:bundleRelease" in tasks ||
+            "bundleRelease" in tasks
+}
+
+static Properties readProperties(propertiesFile) {
+    if (propertiesFile.canRead()) {
+        Properties properties = new Properties()
+        def inputStream = new FileInputStream(propertiesFile)
+        properties.load(inputStream)
+        inputStream.close()
+        return properties
+    } else {
+        def message = ">>> Could not read " + propertiesFile.name + " file!"
+        System.err.println(message)
+        throw new GradleException(message)
+    }
+}
+
+def static writeProperties(propertiesFile, properties) {
+    def writer = propertiesFile.newWriter()
+    properties.store(writer, "Build Properties")
+    writer.close()
+}
+
+def getDateTime(){
+    return new Date().format(".yyMMddHH", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+// ---------  version -------------------------------------------------
+
+
+android {
+    compileSdk 30
+
+    defaultConfig {
+        applicationId "com.yjn.anonymousgroup"
+        minSdk 28
+        targetSdk 30
+        versionCode android.defaultConfig.versionCode
+        versionName android.defaultConfig.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        if (propertyHaveSigningConfigs) {
+            config {
+                keyAlias propertyKeyAliasStr
+                keyPassword propertyKeyPwdStr
+                storeFile file(propertyStoreFileStr)
+                storePassword propertyStorePwdStr
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            // 输出apk名称为
+            def buildName = 'anonymousgroup'
+            if (outputFileName != null && outputFileName.endsWith("_release_unsigned.apk")) {
+                outputFileName = buildName + "_${variant.getVersionName()}_unsigned.apk"
+            } else if (outputFileName != null && outputFileName.endsWith("release.apk")) {
+                outputFileName = buildName + "_${variant.getVersionName()}.apk"
+            } else if (outputFileName != null && outputFileName.endsWith("debug.apk")) {
+                outputFileName = buildName + "_debug.apk"
+            }
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(':common')
+}
