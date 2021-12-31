@@ -1,4 +1,4 @@
-package com.yjn.anonymousgroup;
+package com.yjn.anonymousgroup.udp;
 
 import com.tcl.common.util.L;
 
@@ -19,6 +19,8 @@ public class CanChatUdpSend implements Runnable {
         this.port = port;
         this.ip = ip;
     }
+
+    @Override
     public void run() {
         DatagramSocket datagramSocket = null;
         try{

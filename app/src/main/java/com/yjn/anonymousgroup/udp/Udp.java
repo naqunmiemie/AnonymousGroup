@@ -1,4 +1,4 @@
-package com.yjn.anonymousgroup;
+package com.yjn.anonymousgroup.udp;
 
 import com.blankj.utilcode.util.NetworkUtils;
 

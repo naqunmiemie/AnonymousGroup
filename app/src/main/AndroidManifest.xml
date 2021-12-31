@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.anonymousgroup">
         <activity
-            android:name="com.yjn.anonymousgroup.MainActivity"
+            android:name="com.yjn.anonymousgroup.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

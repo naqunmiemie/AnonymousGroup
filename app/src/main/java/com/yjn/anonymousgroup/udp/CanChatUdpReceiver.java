@@ -1,10 +1,10 @@
-package com.yjn.anonymousgroup;
+package com.yjn.anonymousgroup.udp;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.hjq.toast.ToastUtils;
 import com.tcl.common.util.L;
+import com.yjn.anonymousgroup.model.Message;
+import com.yjn.anonymousgroup.repository.MessageRepository;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -19,9 +19,12 @@ public class CanChatUdpReceiver extends Thread {
 
     private Context context;
 
-    public CanChatUdpReceiver(Context context,int port) {
+    private MessageRepository messageRepository;
+
+    public CanChatUdpReceiver(Context context, int port, MessageRepository messageRepository) {
         this.context = context;
         this.port = port;
+        this.messageRepository = messageRepository;
     }
 
     public void run(){
@@ -34,6 +37,12 @@ public class CanChatUdpReceiver extends Thread {
                 datagramSocket.receive(datagramPacket);
                 String ip = datagramPacket.getAddress().getHostAddress();
                 String data = new String(datagramPacket.getData(),0,datagramPacket.getLength());
+
+                Message message = new Message();
+                message.setMessage(data);
+                message.setTimestamp(System.currentTimeMillis());
+                messageRepository.insertMessage(message);
+
                 L.e("receiver data:"+data);
             }
         }catch(Exception e){
