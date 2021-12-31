@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvChatFrame.setLayoutManager(layoutManager);
         messageAdapter = new MessageAdapter(new ArrayList<Message>());
         binding.rvChatFrame.setAdapter(messageAdapter);
@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onChanged(List<Message> messages) {
                 if (messages != null){
-                    L.d("messageViewModel has changed");
+                    L.d("messageViewModel has changed,messages size:"+messages.size());
                     messageAdapter.messages = messages;
                     messageAdapter.refresh();
                 }

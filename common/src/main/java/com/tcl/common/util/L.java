@@ -6,7 +6,7 @@ import android.util.Log;
 import com.blankj.utilcode.util.AppUtils;
 
 public class L {
-    private static String tagPrefix = AppUtils.getAppPackageName()+"log";
+    private static String tagPrefix = AppUtils.getAppPackageName().split("\\.")[AppUtils.getAppPackageName().split("\\.").length-1]+"Log";
 //    private static boolean isShow = AppUtils.isAppDebug();
     private static boolean isShow = true;
     private static boolean showV = isShow;

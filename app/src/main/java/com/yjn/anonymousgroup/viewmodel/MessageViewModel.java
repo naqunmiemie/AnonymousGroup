@@ -24,7 +24,7 @@ public class MessageViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
         MessageDao messageDao = App.getDatabase().messageDao();
-        messageRepository =  new MessageRepository(messageDao,this);
+        messageRepository =  new MessageRepository(messageDao);
         messageLiveData = messageRepository.getChattingRecords();
     }
 

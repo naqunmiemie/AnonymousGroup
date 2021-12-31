@@ -10,11 +10,9 @@ import java.util.List;
 
 public class MessageRepository {
     private MessageDao messageDao;
-    private MessageViewModel messageViewModel;
 
-    public MessageRepository(MessageDao messageDao,MessageViewModel messageViewModel){
+    public MessageRepository(MessageDao messageDao){
         this.messageDao = messageDao;
-        this.messageViewModel = messageViewModel;
     }
 
     public LiveData<List<Message>> getChattingRecords(){

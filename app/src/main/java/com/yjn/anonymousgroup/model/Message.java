@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Message {
 
-    @PrimaryKey()
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id",typeAffinity = ColumnInfo.INTEGER)
     public int id;
 
