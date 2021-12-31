@@ -1,4 +1,4 @@
-package com.yjn.anonymousgroup.Adapter;
+package com.yjn.anonymousgroup.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,13 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yjn.anonymousgroup.R;
 import com.yjn.anonymousgroup.model.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{

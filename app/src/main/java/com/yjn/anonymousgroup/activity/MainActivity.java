@@ -6,14 +6,12 @@ import android.view.View;
 
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.tcl.common.util.L;
-import com.yjn.anonymousgroup.Adapter.MessageAdapter;
+import com.yjn.anonymousgroup.adapter.MessageAdapter;
 import com.yjn.anonymousgroup.base.BaseActivity;
 import com.yjn.anonymousgroup.databinding.ActivityMainBinding;
 import com.yjn.anonymousgroup.model.Message;
-import com.yjn.anonymousgroup.udp.CanChatUdpReceiver;
 import com.yjn.anonymousgroup.udp.CanChatUdpSend;
 import com.yjn.anonymousgroup.udp.Udp;
 import com.yjn.anonymousgroup.viewmodel.MessageViewModel;
