@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected <T extends ViewModel> T getApplicationScopeViewModel(@NonNull Class<T> modelClass) {
         if (mApplicationProvider == null) {
-            mApplicationProvider = new ViewModelProvider(App.getInstance());
+            mApplicationProvider = new ViewModelProvider(this,new ViewModelProvider.AndroidViewModelFactory(getApplication()));
         }
         return mApplicationProvider.get(modelClass);
     }

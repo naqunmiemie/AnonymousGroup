@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tcl.common.util.L;
 import com.yjn.anonymousgroup.Adapter.MessageAdapter;
 import com.yjn.anonymousgroup.base.BaseActivity;
 import com.yjn.anonymousgroup.databinding.ActivityMainBinding;
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity {
 
     private void initViewModel() {
         messageViewModel = getApplicationScopeViewModel(MessageViewModel.class);
+        messageViewModel.udpReceiver();
     }
 
     private void initView() {
@@ -69,7 +71,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onChanged(List<Message> messages) {
                 if (messages != null){
-
+                    L.d("messageViewModel has changed");
                     messageAdapter.messages = messages;
                     messageAdapter.refresh();
                 }

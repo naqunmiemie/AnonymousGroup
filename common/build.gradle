@@ -41,7 +41,7 @@ dependencies {
     api 'com.github.getActivity:XXPermissions:13.2'
     // 吐司框架：https://github.com/getActivity/ToastUtils
     api 'com.github.getActivity:ToastUtils:10.0'
-    // 日志调试框架：https://github.com/getActivity/Logcat
-    debugImplementation 'com.github.getActivity:Logcat:10.0'
+//    // 日志调试框架：https://github.com/getActivity/Logcat
+//    debugImplementation 'com.github.getActivity:Logcat:10.0'
 
 }
