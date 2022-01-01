@@ -1,6 +1,7 @@
 package com.yjn.anonymousgroup.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.PagingSource;
 
 import com.yjn.anonymousgroup.db.MessageDao;
 import com.yjn.anonymousgroup.model.Message;
@@ -15,7 +16,7 @@ public class MessageRepository {
         this.messageDao = messageDao;
     }
 
-    public LiveData<List<Message>> getChattingRecords(){
+    public PagingSource<Integer, Message> getChattingRecords(){
         return messageDao.getChattingRecords();
     }
 

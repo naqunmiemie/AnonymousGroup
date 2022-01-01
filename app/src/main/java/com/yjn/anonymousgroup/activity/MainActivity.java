@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.tcl.common.util.L;
 import com.yjn.anonymousgroup.adapter.MessageAdapter;
+import com.yjn.anonymousgroup.adapter.comparator.MessageComparator;
 import com.yjn.anonymousgroup.base.BaseActivity;
 import com.yjn.anonymousgroup.databinding.ActivityMainBinding;
 import com.yjn.anonymousgroup.model.Message;
@@ -60,20 +61,13 @@ public class MainActivity extends BaseActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvChatFrame.setLayoutManager(layoutManager);
-        messageAdapter = new MessageAdapter(new ArrayList<Message>());
+        messageAdapter = new MessageAdapter(new MessageComparator());
         binding.rvChatFrame.setAdapter(messageAdapter);
     }
 
     private void initData() {
-        messageViewModel.getChattingRecords().observe(this, new Observer<List<Message>>() {
-            @Override
-            public void onChanged(List<Message> messages) {
-                if (messages != null){
-                    L.d("messageViewModel has changed,messages size:"+messages.size());
-                    messageAdapter.messages = messages;
-                    messageAdapter.refresh();
-                }
-            }
+        messageViewModel.getChattingRecords().observe(this,messagePagingData -> {
+            messageAdapter.submitData(getLifecycle(),messagePagingData);
         });
     }
 }

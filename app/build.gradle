@@ -18,13 +18,6 @@ android {
     }
 
     signingConfigs {
-        System.out.println(">>> signingConfigs" + propertyHaveSigningConfigs)
-        System.out.println(">>> signingConfigs" + propertyKeyAliasStr)
-        System.out.println(">>> signingConfigs" + propertyKeyPwdStr)
-        System.out.println(">>> signingConfigs" + propertyStoreFileStr)
-        System.out.println(">>> signingConfigs" + propertyStorePwdStr)
-
-
         if (propertyHaveSigningConfigs) {
             config {
                 keyAlias propertyKeyAliasStr
@@ -80,9 +73,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation project(':common')
 
-//    //https://developer.android.google.cn/jetpack/androidx/releases/paging#3.0.0
-//    def paging_version = "3.1.0"
-//    implementation "androidx.paging:paging-runtime:$paging_version"
+    //https://developer.android.google.cn/jetpack/androidx/releases/paging#3.0.0
+    def paging_version = "3.0.1"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
     //https://developer.android.google.cn/jetpack/androidx/releases/room?hl=zh_cn
     def room_version = "2.3.0"
