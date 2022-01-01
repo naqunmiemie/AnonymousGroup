@@ -15,8 +15,6 @@ import com.yjn.anonymousgroup.model.Message;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class MessageAdapter extends PagingDataAdapter<Message,MessageAdapter.ViewHolder> {
     public MessageAdapter(@NotNull DiffUtil.ItemCallback<Message> diffCallback) {
         super(diffCallback);

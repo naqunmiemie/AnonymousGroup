@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".activity.SettingActivity">
+
+    <include
+        android:id="@+id/include_bar"
+        layout="@layout/layout_bar" />
+
+    <TextView
+        android:id="@+id/tv_version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_margin="@dimen/setting_margin"
+        android:text="version_name"/>
+
+    <Button
+        android:id="@+id/btn_insert_chat_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="插入2000条聊天记录"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/setting_margin"/>
+    <Button
+        android:id="@+id/btn_send_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送200条聊天消息"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/setting_margin"/>
+    <Button
+        android:id="@+id/btn_clear_chat_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清除聊天记录"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/setting_margin"/>
+    <Button
+        android:id="@+id/btn_insert_coins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="投币"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/setting_margin"/>
+
+
+
+
+</LinearLayout>

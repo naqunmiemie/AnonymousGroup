@@ -6,11 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <include
+        android:id="@+id/include_bar"
+        layout="@layout/layout_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/include_bar"
         app:layout_constraintBottom_toTopOf="@id/et_input_box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

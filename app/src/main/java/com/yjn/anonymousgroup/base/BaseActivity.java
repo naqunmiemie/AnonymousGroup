@@ -31,6 +31,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mApplicationProvider.get(modelClass);
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 
     @Override
     public Resources getResources() {

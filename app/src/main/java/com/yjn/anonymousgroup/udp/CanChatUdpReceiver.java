@@ -3,6 +3,7 @@ package com.yjn.anonymousgroup.udp;
 import android.content.Context;
 
 import com.tcl.common.util.L;
+import com.yjn.anonymousgroup.App;
 import com.yjn.anonymousgroup.model.Message;
 import com.yjn.anonymousgroup.repository.MessageRepository;
 
@@ -17,20 +18,10 @@ public class CanChatUdpReceiver extends Thread {
 
     private DatagramSocket datagramSocket = null;
 
-    private Context context;
-
-    private MessageRepository messageRepository;
-
-    public CanChatUdpReceiver(Context context, int port, MessageRepository messageRepository) {
-        this.context = context;
-        this.port = port;
-        this.messageRepository = messageRepository;
-    }
-
     public void run(){
         try{
             if(datagramSocket == null)
-                datagramSocket = new DatagramSocket(port);
+                datagramSocket = new DatagramSocket(Udp.PORT_ALL);
             while (flag){
                 byte[] buf = new byte[1024];
                 DatagramPacket datagramPacket = new DatagramPacket(buf,buf.length);
@@ -41,13 +32,13 @@ public class CanChatUdpReceiver extends Thread {
                 Message message = new Message();
                 message.setMessage(data);
                 message.setTimestamp(System.currentTimeMillis());
-                messageRepository.insertMessage(message);
+                MessageRepository.getMessageRepository().insertMessage(message);
 
                 L.e("receiver data:"+data);
             }
         }catch(Exception e){
             e.printStackTrace();
-            L.e("服务器挂了");
+            L.e("CanChatUdpReceiver error");
         }finally {
             try{
                 if(datagramSocket !=null)

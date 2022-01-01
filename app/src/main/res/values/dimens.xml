@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="et_input_box_height">60dp</dimen>
+    <dimen name="bar_icon_hw">30dp</dimen>
+    <dimen name="bar_icon_margin">8dp</dimen>
+    <dimen name="setting_margin">20dp</dimen>
+    <dimen name="button_round_size">999dp</dimen>
 </resources>

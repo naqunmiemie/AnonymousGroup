@@ -4,20 +4,30 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.anonymousgroup">
+        android:theme="@style/Theme.Design.NoActionBar">
         <activity
-            android:name="com.yjn.anonymousgroup.activity.MainActivity"
-            android:exported="true">
+            android:name=".activity.SettingActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".service.ReceiverService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

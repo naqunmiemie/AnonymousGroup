@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">AnonymousGroup</string>
-    <string name="app_label">深海群聊</string>
+    <string name="app_name">深海群聊</string>
     <string name="text_send">发送</string>
 </resources>

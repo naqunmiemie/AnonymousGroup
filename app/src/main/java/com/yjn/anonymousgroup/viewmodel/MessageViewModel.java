@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelKt;
 import androidx.paging.Pager;
 import androidx.paging.PagingConfig;
@@ -20,27 +21,20 @@ import com.yjn.anonymousgroup.udp.Udp;
 
 import kotlinx.coroutines.CoroutineScope;
 
-public class MessageViewModel extends AndroidViewModel {
-    private PagingSource<Integer, Message> messageLiveData;
+public class MessageViewModel extends ViewModel {
     private MessageRepository messageRepository;
-    Application application;
     CoroutineScope viewModelScope;
     Pager<Integer, Message> pager;
 
-    public MessageViewModel(@NonNull Application application) {
-        super(application);
-        this.application = application;
-        messageRepository =  new MessageRepository(App.getDatabase().messageDao());
-        messageLiveData = messageRepository.getChattingRecords();
+    public MessageViewModel() {
+        messageRepository =  MessageRepository.getMessageRepository();
+//        PagingSource<Integer, Message> messageLiveData;
+//        messageLiveData = messageRepository.getChattingRecords();
+        viewModelScope = ViewModelKt.getViewModelScope(this);
+        pager = new Pager<>(new PagingConfig(50),() -> messageRepository.getChattingRecords());
     }
 
     public LiveData<PagingData<Message>> getChattingRecords(){
-        viewModelScope = ViewModelKt.getViewModelScope(this);
-        pager = new Pager<>(new PagingConfig(50),() -> messageLiveData);
         return PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager), viewModelScope);
-    }
-
-    public void udpReceiver(){
-        new CanChatUdpReceiver(application, Udp.PORT_ALL,messageRepository).start();
     }
 }

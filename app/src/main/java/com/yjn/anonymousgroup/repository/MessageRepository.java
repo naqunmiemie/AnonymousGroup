@@ -1,19 +1,21 @@
 package com.yjn.anonymousgroup.repository;
 
-import androidx.lifecycle.LiveData;
 import androidx.paging.PagingSource;
 
+import com.yjn.anonymousgroup.App;
 import com.yjn.anonymousgroup.db.MessageDao;
 import com.yjn.anonymousgroup.model.Message;
-import com.yjn.anonymousgroup.viewmodel.MessageViewModel;
-
-import java.util.List;
 
 public class MessageRepository {
     private MessageDao messageDao;
+    private static final MessageRepository messageRepository = new MessageRepository();
 
-    public MessageRepository(MessageDao messageDao){
-        this.messageDao = messageDao;
+    private MessageRepository(){
+        messageDao = App.getDatabase().messageDao();
+    }
+
+    public static MessageRepository getMessageRepository(){
+        return messageRepository;
     }
 
     public PagingSource<Integer, Message> getChattingRecords(){
