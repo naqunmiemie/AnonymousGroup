@@ -32,7 +32,7 @@ public class CanChatUdpReceiver extends Thread {
                 Message message = new Message();
                 message.setMessage(data);
                 message.setTimestamp(System.currentTimeMillis());
-                MessageRepository.getMessageRepository().insertMessage(message);
+                MessageRepository.getInstance().insertMessage(message);
 
                 L.e("receiver data:"+data);
             }

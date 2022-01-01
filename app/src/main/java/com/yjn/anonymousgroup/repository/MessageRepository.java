@@ -14,7 +14,7 @@ public class MessageRepository {
         messageDao = App.getDatabase().messageDao();
     }
 
-    public static MessageRepository getMessageRepository(){
+    public static MessageRepository getInstance(){
         return messageRepository;
     }
 
@@ -24,5 +24,9 @@ public class MessageRepository {
 
     public void insertMessage(Message message){
         messageDao.insertMessage(message);
+    }
+
+    public void deleteAll(){
+        messageDao.deleteAll();
     }
 }

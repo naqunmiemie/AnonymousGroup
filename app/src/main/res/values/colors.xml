@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white90">#E6FFFFFF</color>
 
-    <!-- 按钮按压时的颜色 -->
-    <color name="common_button_default_color">#AA5A8DDF</color>
+    <!-- 按钮默认时的颜色 -->
+    <color name="common_button_default_color">#5A8DDF</color>
     <!-- 按钮按压时的颜色 -->
     <color name="common_button_pressed_color">#AA5A8DDF</color>
     <!-- 按钮禁用时的颜色 -->

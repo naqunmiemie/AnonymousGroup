@@ -21,6 +21,13 @@
         android:text="version_name"/>
 
     <Button
+        android:id="@+id/btn_insert_some_chat_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="插入20条聊天记录"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/setting_margin"/>
+    <Button
         android:id="@+id/btn_insert_chat_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

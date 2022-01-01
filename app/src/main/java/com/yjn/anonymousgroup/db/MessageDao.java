@@ -16,6 +16,6 @@ public interface MessageDao {
     @Query("DELETE FROM message")
     void deleteAll();
 
-    @Query("SELECT * FROM message limit 50")
+    @Query("SELECT * FROM message")
     PagingSource<Integer, Message> getChattingRecords();
 }

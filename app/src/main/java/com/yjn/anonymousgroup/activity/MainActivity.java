@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
         binding.includeBar.ivSubMenu.setOnClickListener(v -> startActivity(new Intent(MainActivity.this,SettingActivity.class)));
 
         if (NetworkUtils.isWifiConnected()){
-            binding.includeBar.tvTitle.setText(getConnectWifiSsid());
+            binding.includeBar.tvTitle.setText("深海群聊");
             binding.includeBar.tvTitle2.setText("在线人数：");
         }
 
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
             String inputText = binding.etInputBox.getText().toString();
             if (!TextUtils.isEmpty(inputText)){
                 binding.etInputBox.getText().clear();
-                initOther();
+                checkWifi();
                 new Thread(new CanChatUdpSend(inputText, Udp.getIpToAll(),Udp.PORT_ALL)).start();
             }
         });
@@ -100,14 +100,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initOther() {
+        checkWifi();
+    }
+
+    private void checkWifi() {
         if (!NetworkUtils.isWifiConnected()){
             ToastUtils.show("未连接WIFI");
         }
     }
 
-    private String getConnectWifiSsid(){
-        WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        return wifiInfo.getSSID();
-    }
 }
