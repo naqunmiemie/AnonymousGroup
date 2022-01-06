@@ -88,6 +88,7 @@ public class MainActivity extends BaseActivity {
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
         binding.rvChatFrame.setLayoutManager(layoutManager);
         messageAdapter = new MessageAdapter(new MessageComparator());
         binding.rvChatFrame.setAdapter(messageAdapter);
