@@ -1,5 +1,7 @@
 package com.yjn.anonymousgroup.activity;
 
+import static com.yjn.anonymousgroup.util.Net.checkWifi;
+
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ServiceUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.hjq.toast.ToastUtils;
 import com.tcl.common.util.L;
 import com.yjn.anonymousgroup.adapter.MessageAdapter;
@@ -60,6 +63,27 @@ public class MainActivity extends BaseActivity {
         if (NetworkUtils.isWifiConnected()){
             binding.includeBar.tvTitle.setText("深海群聊");
             binding.includeBar.tvTitle2.setText("在线人数：");
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
+                    while (true){
+                        ThreadUtils.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.includeBar.tvTitle2.setText("在线人数："+Udp.peopleSet.size());
+                            }
+                        });
+                        Thread.sleep(500);
+                        Udp.peopleSet.clear();
+                        Thread.sleep(500);
+                    }
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+
+                }
+            });
         }
 
     }
@@ -82,8 +106,20 @@ public class MainActivity extends BaseActivity {
             String inputText = binding.etInputBox.getText().toString();
             if (!TextUtils.isEmpty(inputText)){
                 binding.etInputBox.getText().clear();
-                checkWifi();
-                new Thread(new CanChatUdpSend(inputText, Udp.getIpToAll(),Udp.PORT_ALL)).start();
+                if (checkWifi()){
+                    ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                        @Override
+                        public Void doInBackground() throws Throwable {
+                            new CanChatUdpSend(inputText, Udp.getIpToAll(),Udp.PORT_ALL).run();
+                            return null;
+                        }
+
+                        @Override
+                        public void onSuccess(Void result) {
+
+                        }
+                    });
+                }
             }
         });
 
@@ -104,10 +140,6 @@ public class MainActivity extends BaseActivity {
         checkWifi();
     }
 
-    private void checkWifi() {
-        if (!NetworkUtils.isWifiConnected()){
-            ToastUtils.show("未连接WIFI");
-        }
-    }
+
 
 }

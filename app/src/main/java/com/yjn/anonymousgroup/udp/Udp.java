@@ -2,13 +2,18 @@ package com.yjn.anonymousgroup.udp;
 
 import com.blankj.utilcode.util.NetworkUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Udp {
     //定义单独端口
     public static final int PORT_OWN = 52000;
     //定义群聊端口
     public static final int PORT_ALL = 51000;
 
-    public static final String CHECKED_CODE = "check_code_123456789";
+    public static final String CHECKED_CODE = "check_code_123456789-";
+
+    public static Set<String> peopleSet = new HashSet<>();
 
     //获取255ip
     public static String getIpToAll(){

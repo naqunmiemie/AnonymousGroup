@@ -36,48 +36,75 @@ public class SettingActivity extends BaseActivity {
         initBar();
         binding.tvVersionName.setText("version:"+ AppUtils.getAppVersionName());
         binding.btnClearChatRecord.setOnClickListener(v -> {
-            new Thread(() -> {
-                MessageRepository.getInstance().deleteAll();
-                ToastUtils.show("success");
-            }).start();
+
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
+                    MessageRepository.getInstance().deleteAll();
+                    return null;
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+                    ToastUtils.show("success");
+                }
+            });
 
         });
         binding.btnInsertSomeChatRecord.setOnClickListener(v -> {
-            new Thread(() -> {
-                for (int i = 0; i < 20; i++) {
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
                     Message tmp = new Message();
-                    tmp.setMessage("少量测试数据:"+i);
-                    MessageRepository.getInstance().insertMessage(tmp);
+                    for (int i = 0; i < 20; i++) {
+                        tmp.setMessage("少量测试数据:"+ i);
+                        MessageRepository.getInstance().insertMessage(tmp);
+                    }
+                    return null;
                 }
-                ToastUtils.show("success");
-            }).start();
+
+                @Override
+                public void onSuccess(Void result) {
+                    ToastUtils.show("success");
+                }
+            });
+
         });
         binding.btnInsertChatRecord.setOnClickListener(v -> {
-            new Thread(() -> {
-                for (int i = 0; i < 2000; i++) {
+
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
                     Message tmp = new Message();
-                    tmp.setMessage("生成聊天记录:"+i);
-                    MessageRepository.getInstance().insertMessage(tmp);
+                    for (int i = 0; i < 2000; i++) {
+                        tmp.setMessage("生成聊天记录:"+ i);
+                        MessageRepository.getInstance().insertMessage(tmp);
+                    }
+                    return null;
                 }
-                ToastUtils.show("success");
-            }).start();
+
+                @Override
+                public void onSuccess(Void result) {
+                    ToastUtils.show("success");
+                }
+            });
+
         });
         binding.btnSendMessage.setOnClickListener(v -> {
-            for (int i = 0; i < 200; i++) {
-                int finalI = i;
-                ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
-                    @Override
-                    public Void doInBackground() throws Throwable {
-                        new CanChatUdpSend("发送聊天记录:"+ finalI, Udp.getIpToAll(),Udp.PORT_ALL).run();
-                        return null;
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
+                    for (int i = 0; i < 200; i++) {
+                        new CanChatUdpSend("发送聊天记录:"+ i, Udp.getIpToAll(),Udp.PORT_ALL).run();
                     }
+                    return null;
+                }
 
-                    @Override
-                    public void onSuccess(Void result) {
-                    }
-                });
-            }
-            ToastUtils.show("success");
+                @Override
+                public void onSuccess(Void result) {
+                    ToastUtils.show("success");
+                }
+            });
         });
         binding.btnInsertCoins.setOnClickListener(v -> {
             try {

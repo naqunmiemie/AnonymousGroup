@@ -1,5 +1,7 @@
 package com.yjn.anonymousgroup.service;
 
+import static com.yjn.anonymousgroup.util.Net.checkWifi;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,9 +13,12 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ThreadUtils;
 import com.yjn.anonymousgroup.R;
 import com.yjn.anonymousgroup.activity.MainActivity;
 import com.yjn.anonymousgroup.udp.CanChatUdpReceiver;
+import com.yjn.anonymousgroup.udp.CanChatUdpSend;
 import com.yjn.anonymousgroup.udp.Udp;
 
 public class ReceiverService extends Service {
@@ -33,7 +38,35 @@ public class ReceiverService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
-        udpReceiver();
+        ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+            @Override
+            public Void doInBackground() throws Throwable {
+                new CanChatUdpReceiver().run();
+                return null;
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+
+            }
+        });
+
+        if (checkWifi()){
+            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+                @Override
+                public Void doInBackground() throws Throwable {
+                    while (true){
+                        Thread.sleep(400);
+                        new CanChatUdpSend(Udp.CHECKED_CODE, Udp.getIpToAll(),Udp.PORT_ALL).run();
+                    }
+                }
+
+                @Override
+                public void onSuccess(Void result) {
+
+                }
+            });
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -68,8 +101,4 @@ public class ReceiverService extends Service {
         startForeground(1,notification);
     }
 
-    private void udpReceiver(){
-        canChatUdpReceiver = new CanChatUdpReceiver();
-        canChatUdpReceiver.start();
-    }
 }
