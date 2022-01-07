@@ -42,7 +42,7 @@ public class CanChatUdpReceiver implements Runnable {
                     MessageRepository.getInstance().insertMessage(message);
                 }
 
-                L.e("receiver data:"+data);
+//                L.e("receiver data:"+data);
             }
         }catch(Exception e){
             e.printStackTrace();

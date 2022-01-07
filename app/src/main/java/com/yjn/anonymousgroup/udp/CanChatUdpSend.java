@@ -25,7 +25,7 @@ public class CanChatUdpSend implements Runnable {
         DatagramSocket datagramSocket = null;
         try{
             datagramSocket = new DatagramSocket();
-            L.e("send data:"+data);
+//            L.e("send data:"+data);
             byte[] buf = data.getBytes();
             DatagramPacket dp = new DatagramPacket(buf,buf.length, InetAddress.getByName(ip),port);
             datagramSocket.send(dp);

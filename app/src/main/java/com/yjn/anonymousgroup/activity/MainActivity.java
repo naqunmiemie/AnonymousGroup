@@ -3,34 +3,25 @@ package com.yjn.anonymousgroup.activity;
 import static com.yjn.anonymousgroup.util.Net.checkWifi;
 
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ServiceUtils;
 import com.blankj.utilcode.util.ThreadUtils;
-import com.hjq.toast.ToastUtils;
 import com.tcl.common.util.L;
 import com.yjn.anonymousgroup.adapter.MessageAdapter;
 import com.yjn.anonymousgroup.adapter.comparator.MessageComparator;
 import com.yjn.anonymousgroup.base.BaseActivity;
 import com.yjn.anonymousgroup.databinding.ActivityMainBinding;
-import com.yjn.anonymousgroup.model.Message;
 import com.yjn.anonymousgroup.service.ReceiverService;
 import com.yjn.anonymousgroup.udp.CanChatUdpSend;
 import com.yjn.anonymousgroup.udp.Udp;
 import com.yjn.anonymousgroup.viewmodel.MessageViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -102,6 +93,10 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         initBar();
+        binding.srlChatFrame.setOnRefreshListener(() -> {
+            L.d("下拉刷新");
+            binding.srlChatFrame.setRefreshing(false);
+        });
         binding.btnSend.setOnClickListener(v -> {
             String inputText = binding.etInputBox.getText().toString();
             if (!TextUtils.isEmpty(inputText)){
@@ -123,17 +118,49 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         layoutManager.setStackFromEnd(true);
         binding.rvChatFrame.setLayoutManager(layoutManager);
         messageAdapter = new MessageAdapter(new MessageComparator());
         binding.rvChatFrame.setAdapter(messageAdapter);
+
     }
 
     private void initData() {
         messageViewModel.getChattingRecords().observe(this,messagePagingData -> {
             messageAdapter.submitData(getLifecycle(),messagePagingData);
+
+//            if (isVisBottom(binding.rvChatFrame)){
+//                L.d("messageAdapter.getItemCount()"+messageAdapter.getItemCount());
+//                messageAdapter.submitData(getLifecycle(),messagePagingData);
+//                binding.rvChatFrame.scrollToPosition(messageAdapter.getItemCount());
+//                L.d("messageAdapter.getItemCount()"+messageAdapter.getItemCount());
+//                L.d("isVisBottom");
+//            }else {
+//                messageAdapter.submitData(getLifecycle(),messagePagingData);
+//
+//                L.d("isNotVisBottom");
+//            }
+
+
         });
+    }
+
+    public static boolean isVisBottom(RecyclerView recyclerView){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        //屏幕中最后一个可见子项的position
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        //当前屏幕所看到的子项个数
+        int visibleItemCount = layoutManager.getChildCount();
+        //当前RecyclerView的所有子项个数
+        int totalItemCount = layoutManager.getItemCount();
+        //RecyclerView的滑动状态
+        int state = recyclerView.getScrollState();
+        if(visibleItemCount > 0 && lastVisibleItemPosition == totalItemCount - 1 && state == recyclerView.SCROLL_STATE_IDLE){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     private void initOther() {
