@@ -15,4 +15,6 @@ public class MessageComparator extends DiffUtil.ItemCallback<Message> {
     public boolean areContentsTheSame(@NonNull Message oldItem, @NonNull Message newItem) {
         return oldItem.id == newItem.id;
     }
+
+
 }

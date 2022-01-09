@@ -73,6 +73,7 @@ public class ReceiverService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopForeground(true);// 停止前台服务--参数：表示是否移除之前的通知
         if (canChatUdpReceiver != null){
             canChatUdpReceiver.interrupt();
         }
@@ -85,7 +86,12 @@ public class ReceiverService extends Service {
         PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 1001, hangIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String CHANNEL_ID = AppUtils.getAppPackageName();//应用频道Id唯一值， 长度若太长可能会被截断，
-        String CHANNEL_NAME = AppUtils.getAppPackageName();//最长40个字符，太长会被截断
+//        String CHANNEL_NAME = AppUtils.getAppPackageName();//最长40个字符，太长会被截断
+//        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
+//                CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
+//        manager.createNotificationChannel(notificationChannel);
+
+
         notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText("后台运行")
@@ -94,9 +100,7 @@ public class ReceiverService extends Service {
                 .setAutoCancel(true)
                 .build();
 
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,
-                CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
-        manager.createNotificationChannel(notificationChannel);
+
 
         startForeground(1,notification);
     }

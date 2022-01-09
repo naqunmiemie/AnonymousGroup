@@ -54,28 +54,29 @@ public class MainActivity extends BaseActivity {
         if (NetworkUtils.isWifiConnected()){
             binding.includeBar.tvTitle.setText("深海群聊");
             binding.includeBar.tvTitle2.setText("在线人数：");
-            ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
-                @Override
-                public Void doInBackground() throws Throwable {
-                    while (true){
-                        ThreadUtils.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                binding.includeBar.tvTitle2.setText("在线人数："+Udp.peopleSet.size());
-                            }
-                        });
-                        Thread.sleep(500);
-                        Udp.peopleSet.clear();
-                        Thread.sleep(500);
-                    }
-                }
-
-                @Override
-                public void onSuccess(Void result) {
-
-                }
-            });
         }
+
+        ThreadUtils.executeByIo(new ThreadUtils.SimpleTask<Void>() {
+            @Override
+            public Void doInBackground() throws Throwable {
+                while (true){
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.includeBar.tvTitle2.setText("在线人数："+Udp.peopleSet.size());
+                        }
+                    });
+                    Thread.sleep(500);
+                    Udp.peopleSet.clear();
+                    Thread.sleep(500);
+                }
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+
+            }
+        });
 
     }
 
@@ -117,11 +118,19 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         binding.rvChatFrame.setLayoutManager(layoutManager);
         messageAdapter = new MessageAdapter(new MessageComparator());
+        messageAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                if (layoutManager.findLastVisibleItemPosition()+1 == positionStart){
+                    binding.rvChatFrame.scrollToPosition(positionStart);
+                }
+            }
+        });
         binding.rvChatFrame.setAdapter(messageAdapter);
 
     }
@@ -129,19 +138,6 @@ public class MainActivity extends BaseActivity {
     private void initData() {
         messageViewModel.getChattingRecords().observe(this,messagePagingData -> {
             messageAdapter.submitData(getLifecycle(),messagePagingData);
-
-//            if (isVisBottom(binding.rvChatFrame)){
-//                L.d("messageAdapter.getItemCount()"+messageAdapter.getItemCount());
-//                messageAdapter.submitData(getLifecycle(),messagePagingData);
-//                binding.rvChatFrame.scrollToPosition(messageAdapter.getItemCount());
-//                L.d("messageAdapter.getItemCount()"+messageAdapter.getItemCount());
-//                L.d("isVisBottom");
-//            }else {
-//                messageAdapter.submitData(getLifecycle(),messagePagingData);
-//
-//                L.d("isNotVisBottom");
-//            }
-
 
         });
     }
